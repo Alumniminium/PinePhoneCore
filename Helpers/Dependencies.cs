@@ -17,6 +17,7 @@ namespace PinePhoneCore.Helpers
             ["iwconfig"] = false,
             ["iwlist"] = false,
             ["iwgetid"] = false,
+            ["rfkill"] = false,
         };
 
         public static async Task TestDependencies()
