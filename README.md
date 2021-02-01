@@ -11,7 +11,7 @@ Contribute however you like. No rules.
 
 ## Features
 
-# Accelerometer (mpu6050)
+### Accelerometer (mpu6050)
 * Scale Get/Set
 * Sampling Frequency Get/Set
 * Bias Get/Set
@@ -19,12 +19,12 @@ Contribute however you like. No rules.
 * Scaled/Raw X, Y, Z
 * Scaled/Raw Angular Velocity X, Y, Z
 
-# Ambient Light Sensor (stk3310)
+### Ambient Light Sensor (stk3310)
 * Scale Get/Set
 * Integration Time Get/Set
 * Scaled/Raw Luminance
 
-# Battery (axp20x-usb)
+### Battery (axp20x-usb)
 * Status
 * Health
 * Online
@@ -37,10 +37,10 @@ Contribute however you like. No rules.
 * Constant Charging (Max)Current (Get/Set)
 * Current Flow
 
-# Bluetooth
+### Bluetooth
 * Enabled (Get/Set)
 
-# CPU Core
+### CPU Core
 * Enabled (Get/Set)
 * Governor (Get/Set)
 * (Critical)Temperature
@@ -48,16 +48,16 @@ Contribute however you like. No rules.
 * Min/Max (Governor)Frequency
 * Frequency Stats
 
-# Display
+### Display
 * Brightness (Get/Set)
 * Backlight Power (Get/Set)
 
-# Magnetometer (lis3mdl)
+### Magnetometer (lis3mdl)
 * Sampling Frequency (Get/Set)
 * Scale (Get/Set)
 * Raw/Scaled X,Y,Z
 
-# Power Supply (axp20x-usb)
+### Power Supply (axp20x-usb)
 * Status
 * Health
 * Online
@@ -69,16 +69,16 @@ Contribute however you like. No rules.
 * Input Current Limit DCP (Get/Set)
 * Charging Protocol
 
-# Proximity Sensor (stk3310)
+### Proximity Sensor (stk3310)
 * Scale Get/Set
 * Integration Time Get/Set
 * Scaled/Raw Proximity
 
-# SoC (A64)
+### SoC (A64)
 * GPU Temp
 * CPU Temp
 
-# WiFi
+### WiFi
 * Enabled (RFKILL, NMCLI, IFCONFIG, IP) (Get/Set)
 * Connected (NMCLI, IP, IFCONFIG)
 * MAC (IFCONFIG, IP) (Get/Set)
