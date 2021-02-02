@@ -52,6 +52,10 @@ Contribute however you like. No rules.
 * Brightness (Get/Set)
 * Backlight Power (Get/Set)
 
+### Headphone Jack
+* Event based plug detection
+* Headphone Kind (Headset, Headphones)
+
 ### Magnetometer (lis3mdl)
 * Sampling Frequency (Get/Set)
 * Scale (Get/Set)

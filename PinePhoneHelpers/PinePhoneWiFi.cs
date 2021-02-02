@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Net;
+using PinePhoneCore.Devices;
 using PinePhoneCore.Helpers;
 
 namespace PinePhoneCore.PinePhoneHelpers
@@ -28,11 +29,11 @@ namespace PinePhoneCore.PinePhoneHelpers
         public static void Toggle(bool on)
         {
             if (Dependencies.Found["ip"])
-                Global.WiFi.Enabled_IPA = on;
+                WiFi.Enabled_IPA = on;
             else if (Dependencies.Found["rfkill"])
-                Global.WiFi.Enabled_RFKILL = on;
+                WiFi.Enabled_RFKILL = on;
             else if (Dependencies.Found["nmcli"])
-                Global.WiFi.Enabled_NMCLI = on;
+                WiFi.Enabled_NMCLI = on;
             else
                 throw new NotSupportedException("None of the required dependencies were found.");
         }
@@ -40,24 +41,24 @@ namespace PinePhoneCore.PinePhoneHelpers
         public static bool IsEnabled()
         {
             if (Dependencies.Found["rfkill"])
-                return Global.WiFi.Enabled_RFKILL;
+                return WiFi.Enabled_RFKILL;
             else if (Dependencies.Found["ifconfig"])
-                return Global.WiFi.Enabled_IFCONFIG;
+                return WiFi.Enabled_IFCONFIG;
             else if (Dependencies.Found["ip"])
-                return Global.WiFi.Enabled_IPA;
+                return WiFi.Enabled_IPA;
             else if (Dependencies.Found["nmcli"])
-                return Global.WiFi.Enabled_NMCLI;
+                return WiFi.Enabled_NMCLI;
             else
                 throw new NotSupportedException("None of the required dependencies were found.");
         }        
         public static bool IsConnected()
         {
             if (Dependencies.Found["ifconfig"])
-                return Global.WiFi.IsConnected_IFCONFIG;
+                return WiFi.IsConnected_IFCONFIG;
             else if (Dependencies.Found["ip"])
-                return Global.WiFi.IsConnected_IPA;
+                return WiFi.IsConnected_IPA;
             else if (Dependencies.Found["nmcli"])
-                return Global.WiFi.IsConnected_NMCLI;
+                return WiFi.IsConnected_NMCLI;
             else
                 throw new NotSupportedException("None of the required dependencies were found.");
         }
@@ -65,18 +66,18 @@ namespace PinePhoneCore.PinePhoneHelpers
         public static string GetMAC()
         {
             if (Dependencies.Found["ifconfig"])
-                return Global.WiFi.MAC_IFCONFIG;
+                return WiFi.MAC_IFCONFIG;
             else if (Dependencies.Found["ip"])
-                return Global.WiFi.MAC_IPA;
+                return WiFi.MAC_IPA;
             else
                 throw new NotSupportedException("None of the required dependencies were found.");
         }
         public static void SetMAC(string mac)
         {
             if (Dependencies.Found["ifconfig"])
-                Global.WiFi.MAC_IFCONFIG = mac;
+                WiFi.MAC_IFCONFIG = mac;
             else if (Dependencies.Found["ip"])
-                Global.WiFi.MAC_IPA = mac;
+                WiFi.MAC_IPA = mac;
             else
                 throw new NotSupportedException("None of the required dependencies were found.");
         }
@@ -84,9 +85,9 @@ namespace PinePhoneCore.PinePhoneHelpers
         public static string GetCurrentSSID()
         {
             if (Dependencies.Found["iwgetid"])
-                return Global.WiFi.SSID_IWGETID;
+                return WiFi.SSID_IWGETID;
             else if (Dependencies.Found["nmcli"])
-                return Global.WiFi.SSID_NMCLI;
+                return WiFi.SSID_NMCLI;
             else
                 throw new NotSupportedException("None of the required dependencies were found.");
         }
@@ -95,9 +96,9 @@ namespace PinePhoneCore.PinePhoneHelpers
         {
             var ip = string.Empty;
             if (Dependencies.Found["ifconfig"])
-                ip = Global.WiFi.LocalIP_IFCONFIG;
+                ip = WiFi.LocalIP_IFCONFIG;
             else if (Dependencies.Found["ip"])
-                ip = Global.WiFi.LocalIP_IPA;
+                ip = WiFi.LocalIP_IPA;
             else
                 throw new NotSupportedException("None of the required dependencies were found.");
 
@@ -106,9 +107,9 @@ namespace PinePhoneCore.PinePhoneHelpers
         public static void SetLocalIP(string ip)
         {
             if (Dependencies.Found["ifconfig"])
-                Global.WiFi.LocalIP_IFCONFIG = ip;
+                WiFi.LocalIP_IFCONFIG = ip;
             else if (Dependencies.Found["ip"])
-                Global.WiFi.LocalIP_IPA = ip;
+                WiFi.LocalIP_IPA = ip;
             else
                 throw new NotSupportedException("None of the required dependencies were found.");
         }
@@ -116,21 +117,21 @@ namespace PinePhoneCore.PinePhoneHelpers
         public static int GetSignalLevel()
         {
             if (Dependencies.Found["iwconfig"])
-                return Global.WiFi.SignalLevel_IWCONFIG;
+                return WiFi.SignalLevel_IWCONFIG;
             else
                 throw new NotSupportedException("None of the required dependencies were found.");
         }
         public static int GetNoiseLevel()
         {
             if (Dependencies.Found["iwconfig"])
-                return Global.WiFi.NoiseLevel_IWCONFIG;
+                return WiFi.NoiseLevel_IWCONFIG;
             else
                 throw new NotSupportedException("None of the required dependencies were found.");
         }
         public static int GetLinkQuality()
         {
             if (Dependencies.Found["iwconfig"])
-                return Global.WiFi.LinkQuality_IWCONFIG;
+                return WiFi.LinkQuality_IWCONFIG;
             else
                 throw new NotSupportedException("None of the required dependencies were found.");
         }
@@ -138,11 +139,11 @@ namespace PinePhoneCore.PinePhoneHelpers
         public static List<string> Scan()
         {
             if (Dependencies.Found["iw"])
-                return Global.WiFi.Scan_IW;
+                return WiFi.Scan_IW;
             else if (Dependencies.Found["iwlist"])
-                return Global.WiFi.Scan_IWLIST;
+                return WiFi.Scan_IWLIST;
             else if (Dependencies.Found["nmcli"])
-                return Global.WiFi.Scan_NMCLI;
+                return WiFi.Scan_NMCLI;
             else
                 throw new NotSupportedException("None of the required dependencies were found.");
         }

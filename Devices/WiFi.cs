@@ -6,33 +6,33 @@ using PinePhoneCore.Helpers;
 
 namespace PinePhoneCore.Devices
 {
-    public class WiFi
+    public static class WiFi
     {
-        public bool Enabled_RFKILL
+        public static bool Enabled_RFKILL
         {
             get => File.ReadAllText("/sys/class/rfkill/rfkill0/soft").Trim() == "0";
             set => File.WriteAllText("/sys/class/rfkill/rfkill0/soft", $"{(value ? "0" : "1")}");
         }
-        public bool Enabled_NMCLI
+        public static bool Enabled_NMCLI
         {
             get => Shell.GetValue("nmcli", "radio wifi") == "enabled";
             set => Shell.GetValue("nmcli", $"radio wifi {(value ? "on" : "off")}");
         }
-        public bool Enabled_IPA
+        public static bool Enabled_IPA
         {
             get => Shell.GetValue("ip", "a show dev wlan0").Split(Environment.NewLine)[0].Contains("state UP");
             set => Shell.GetValue("ip", $"link set dev wlan0 {(value ? "up" : "down")}");
         }
-        public bool Enabled_IFCONFIG
+        public static bool Enabled_IFCONFIG
         {
             get => Shell.GetValue("ifconfig", "wlan0").Contains(" UP ");
             set => Shell.GetValue("ifconfig", $"wlan0 {(value ? "up" : "down")}");
         }
-        public bool IsConnected_NMCLI => Shell.GetValue("nmcli", "connection show --active").Contains("wlan0");
-        public bool IsConnected_IPA => Shell.GetValue("ip", "a show dev wlan0").Contains(" inet ");
-        public bool IsConnected_IFCONFIG => Shell.GetValue("ifconfig", "wlan0").Contains("inet addr");
+        public static bool IsConnected_NMCLI => Shell.GetValue("nmcli", "connection show --active").Contains("wlan0");
+        public static bool IsConnected_IPA => Shell.GetValue("ip", "a show dev wlan0").Contains(" inet ");
+        public static bool IsConnected_IFCONFIG => Shell.GetValue("ifconfig", "wlan0").Contains("inet addr");
 
-        public string MAC_IFCONFIG
+        public static string MAC_IFCONFIG
         {
             get
             {
@@ -49,7 +49,7 @@ namespace PinePhoneCore.Devices
             }
             set => Shell.GetValue("ifconfig", "wlan0 hw ether " + value);
         }
-        public string MAC_IPA
+        public static string MAC_IPA
         {
             get
             {
@@ -67,7 +67,7 @@ namespace PinePhoneCore.Devices
             set => Shell.GetValue("ip", "link set dev wlan0 address " + value);
         }
 
-        public string SSID_NMCLI
+        public static string SSID_NMCLI
         {
             get
             {
@@ -88,9 +88,9 @@ namespace PinePhoneCore.Devices
                 return ssid;
             }
         }
-        public string SSID_IWGETID => Shell.GetValue("iwgetid", "-r");
+        public static string SSID_IWGETID => Shell.GetValue("iwgetid", "-r");
 
-        public string LocalIP_IFCONFIG
+        public static string LocalIP_IFCONFIG
         {
             get
             {
@@ -98,9 +98,9 @@ namespace PinePhoneCore.Devices
                 var found = Shell.FindByPattern("ifconfig", "wlan0", pattern);
                 return found.Split(' ')[0];
             }
-            set => Shell.GetValue("ifconfig","wlan0 "+value);
+            set => Shell.GetValue("ifconfig", "wlan0 " + value);
         }
-        public string LocalIP_IPA
+        public static string LocalIP_IPA
         {
             get
             {
@@ -108,10 +108,10 @@ namespace PinePhoneCore.Devices
                 var found = Shell.FindByPattern("ip", "a show dev wlan0", pattern);
                 return found.Split(' ')[0].Split('/')[0];
             }
-            set => Shell.GetValue("ip",$"a add {value} dev wlan0");
+            set => Shell.GetValue("ip", $"a add {value} dev wlan0");
         }
 
-        public byte SignalLevel_IWCONFIG
+        public static byte SignalLevel_IWCONFIG
         {
             get
             {
@@ -120,7 +120,7 @@ namespace PinePhoneCore.Devices
                 return byte.Parse(found.Split('/')[0]);
             }
         }
-        public byte NoiseLevel_IWCONFIG
+        public static byte NoiseLevel_IWCONFIG
         {
             get
             {
@@ -129,7 +129,7 @@ namespace PinePhoneCore.Devices
                 return byte.Parse(found.Split('/')[0]);
             }
         }
-        public byte LinkQuality_IWCONFIG
+        public static byte LinkQuality_IWCONFIG
         {
             get
             {
@@ -139,7 +139,7 @@ namespace PinePhoneCore.Devices
             }
         }
 
-        public List<string> Scan_IW
+        public static List<string> Scan_IW
         {
             get
             {
@@ -157,7 +157,7 @@ namespace PinePhoneCore.Devices
                 return ssids;
             }
         }
-        public List<string> Scan_IWLIST
+        public static List<string> Scan_IWLIST
         {
             get
             {
@@ -175,7 +175,7 @@ namespace PinePhoneCore.Devices
                 return ssids;
             }
         }
-        public List<string> Scan_NMCLI
+        public static List<string> Scan_NMCLI
         {
             get
             {
@@ -191,11 +191,11 @@ namespace PinePhoneCore.Devices
             }
         }
 
-        public override string ToString()
+        new public static string ToString()
         {
             var sb = new StringBuilder();
-            foreach (var p in GetType().GetProperties())
-                sb.AppendLine($"{p.Name}: {p.GetValue(this, null)}");
+            foreach (var p in typeof(WiFi).GetProperties())
+                sb.AppendLine($"{p.Name}: {p.GetValue(null)}");
             return sb.ToString();
         }
     }
