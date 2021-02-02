@@ -5,7 +5,6 @@ I've built a library for you to use that does all the tedious stuff!
 But this library is not yet complete (Feb 2021) and will probably change around for a while.
 I recommend you fork and include the source project in your application, not a compiled library
 
-![https://www.nuget.org/packages/PinePhoneCore/](https://img.shields.io/nuget/vpre/PinePhoneCore?style=for-the-badge)
 
 #### Contribution 
 Contribute however you like. No rules.
@@ -94,3 +93,54 @@ Contribute however you like. No rules.
 * Link Quality (IWCONFIG)
 * Scan (IW, IWLIST, NMCLI)
 
+## Install
+
+```
+dotnet add package PinePhoneCore --version 0.0.1
+```
+
+## Use
+
+#### Battery Monitor
+
+```cs
+static void Main(string[] args)
+{
+    while (true)
+    {
+        var state = PinePhoneBattery.GetState();
+        var flow = PinePhoneBattery.GetChargeFlowMilliAmps();
+        switch (state)
+        {
+            case BatteryState.Unknown:
+                break;
+            case BatteryState.Charging:
+                var untilFull = PinePhoneBattery.GetTimeUntilFull()ToStri("hh'h 'mm'min'");
+                Console.WriteLine($"Battery full in {untilFull} (delivering {flow}mAh)");
+                break;
+            case BatteryState.Discharging:
+                var untilEmpty = PinePhoneBattery.GetTimeUntilEmpty()ToStri("hh'h 'mm'min'");
+                Console.WriteLine($"Battery empty in {untilEmpty} (drawing {flow}mAh)");
+                break;
+        }
+        Thread.Sleep(1000);
+    }
+}
+```
+#### Event based Headphone jack monitoring 
+
+```cs
+        static void Main(string[] args)
+        {
+            HeadphoneJack.Monitor.OnData = Handler;
+
+            while(true)
+                Thread.Sleep(int.MaxValue);
+        }
+
+        private static void Handler(NativeInputEvent obj)
+        {
+            var dotConfig=Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            Shell.GetValue($"{dotConfig}/sxmo/hooks/headphonejack",$"{HeadphoneJack.Connected}");
+        }
+```
