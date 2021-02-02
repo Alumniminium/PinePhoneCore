@@ -5,6 +5,8 @@ I've built a library for you to use that does all the tedious stuff!
 But this library is not yet complete (Feb 2021) and will probably change around for a while.
 I recommend you fork and include the source project in your application, not a compiled library
 
+![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/PinePhoneCore?style=for-the-badge)
+
 #### Contribution 
 Contribute however you like. No rules.
 *just use common sense if available*
