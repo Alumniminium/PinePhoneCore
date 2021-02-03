@@ -1,6 +1,5 @@
 using System;
 using System.Text;
-using PinePhoneCore.Enums;
 using PinePhoneCore.Helpers;
 
 namespace PinePhoneCore.Devices
@@ -14,8 +13,8 @@ namespace PinePhoneCore.Devices
         public static Action<bool> OnVolumeDownKeyStateChanged;
         public static Action<bool> OnVolumeUpKeyStateChanged;
         public static Action<bool> OnPowerKeyStateChanged;
-        public static Action<ButtonState> OnVolumeKeyStateChanged;
-        public static Action<ButtonState> OnKeyStateChanged;
+        public static Action<HardwareButton,bool> OnVolumeKeyStateChanged;
+        public static Action<HardwareButton,bool> OnKeyStateChanged;
 
         public static bool PowerKeyDown => PowerButtonMonitor.LastEvent.Value == 1;
         public static bool VolumeDownKeyDown => VolumeButtonMonitor.LastEvent.Value == 1;
@@ -29,28 +28,25 @@ namespace PinePhoneCore.Devices
 
         private static void Handler(NativeInputEvent inputEvent)
         {
-            var buttonState = new ButtonState();
-            var volDirty = inputEvent.Code < 116;
+            // button, state, IsVolumeKey
+            var (b,s,v) = ((HardwareButton)inputEvent.Code,inputEvent.Value==1,inputEvent.Code < 116);
             
-            switch (inputEvent.Code)
+            switch (b)
             {
-                case 116:
-                    buttonState.PowerKeyDown = (inputEvent.Value == 1);
+                case HardwareButton.Power:
                     OnPowerKeyStateChanged?.Invoke(inputEvent.Value == 1);
                     break;
-                case 115:
-                    buttonState.VolumeUpKeyDown = (inputEvent.Value == 1);
+                case HardwareButton.VolumeUp:
                     OnVolumeUpKeyStateChanged?.Invoke(inputEvent.Value == 1);
                     break;
-                case 114:
-                    buttonState.VolumeDownKeyDown = (inputEvent.Value == 1);
+                case HardwareButton.VolumeDown:
                     OnVolumeDownKeyStateChanged?.Invoke(inputEvent.Value == 1);
                     break;
             }
-            if (volDirty)
-                OnVolumeKeyStateChanged?.Invoke(buttonState);
+            if (v)
+                OnVolumeKeyStateChanged?.Invoke(b,s);
 
-            OnKeyStateChanged?.Invoke(buttonState);
+            OnKeyStateChanged?.Invoke(b,s);
         }
 
 

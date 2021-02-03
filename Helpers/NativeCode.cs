@@ -22,10 +22,10 @@ namespace PinePhoneCore.Helpers
         public ushort Code;
         public uint Value;
     }
-    public class ButtonState
+    public enum HardwareButton
     {
-        public bool PowerKeyDown;
-        public bool VolumeDownKeyDown;
-        public bool VolumeUpKeyDown;
+        Power,
+        VolumeUp,
+        VolumeDown
     }
 }

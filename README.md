@@ -113,86 +113,73 @@ dotnet add package PinePhoneCore --version 0.0.21
 
 ## Use
 
-#### Battery Monitor
-
+#### Event based Hardware Key handling
 ```cs
-static void Main(string[] args)
-{
-    while (true)
-    {
-        var state = PinePhoneBattery.GetState();
-        var flow = PinePhoneBattery.GetChargeFlowMilliAmps();
-        switch (state)
-        {
-            case BatteryState.Unknown:
-                break;
-            case BatteryState.Charging:
-                var untilFull = PinePhoneBattery.GetTimeUntilFull()ToStri("hh'h 'mm'min'");
-                Console.WriteLine($"Battery full in {untilFull} (delivering {flow}mAh)");
-                break;
-            case BatteryState.Discharging:
-                var untilEmpty = PinePhoneBattery.GetTimeUntilEmpty()ToStri("hh'h 'mm'min'");
-                Console.WriteLine($"Battery empty in {untilEmpty} (drawing {flow}mAh)");
-                break;
-        }
-        Thread.Sleep(1000);
-    }
-}
+// All in one
+    HardwareButtons.OnKeyStateChanged += (button,state)=> Console.WriteLine($"{button}: {(state ? "Pressed!" : "Released!")}");
+
+// Both Volume Buttons
+    HardwareButtons.OnVolumeKeyStateChanged += (button,state)=> Console.WriteLine($"{button}: {(state ? "Pressed!" : "Released!")}");
+
+// Individual events for each button
+    HardwareButtons.OnVolumeDownKeyStateChanged += (down)=> Console.WriteLine($"VolumeDown: {(down ? "Pressed!" : "Released!")}");
+    HardwareButtons.OnVolumeUpKeyStateChanged += (down)=> Console.WriteLine($"VolumeUp: {(down ? "Pressed!" : "Released!")}");
+    HardwareButtons.OnPowerKeyStateChanged += (down)=> Console.WriteLine($"PowerButon: {(down ? "Pressed!" : "Released!")}");
 ```
-#### Event based Headphone jack monitoring 
+
+#### (Sample) Event based Headphone jack monitoring 
 
 ```cs
 class Program
+{
+    public static string DotConfigPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+    static void Main(string[] args)
     {
-        public static string DotConfigPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-
-        static void Main(string[] args)
+        if (Environment.UserName == "root")
         {
-            if (Environment.UserName == "root")
-            {
-                Console.WriteLine("ExitCode 1: Don't run me as root!");
-                Environment.Exit(1);
-            }
-            //HeadphoneJack.OnPluggedIn = Plugged;
-            //HeadphoneJack.OnPluggedOut = Plugged;
-            HeadphoneJack.OnPlugged = Plugged;
-
-            while (true)
-                Thread.Sleep(int.MaxValue);
+            Console.WriteLine("ExitCode 1: Don't run me as root!");
+            Environment.Exit(1);
         }
+        //HeadphoneJack.OnPluggedIn = Plugged;
+        //HeadphoneJack.OnPluggedOut = Plugged;
+        HeadphoneJack.OnPlugged = Plugged;
+        while (true)
+            Thread.Sleep(int.MaxValue);
+    }
+    private static void Plugged(HeadphoneKind kind)
+    {
+        Shell.Execute($"sh", $"-c \"{DotConfigPath}/sxmo/hooks/headphonejack {HeadphoneJack.Connected}\"");
+    }
+}
+```
 
-        private static void Plugged(HeadphoneKind kind)
+#### (Sample) Battery Monitor
+
+```cs
+class Program
+{
+    static void Main(string[] args)
+    {
+        while (true)
         {
-            Shell.Execute($"sh", $"-c \"{DotConfigPath}/sxmo/hooks/headphonejack {HeadphoneJack.Connected}\"");
+            var state = PinePhoneBattery.GetState();
+            var flow = PinePhoneBattery.GetChargeFlowMilliAmps();
+            switch (state)
+            {
+                case BatteryState.Unknown:
+                    break;
+                case BatteryState.Charging:
+                    var untilFull = PinePhoneBattery.GetTimeUntilFull()ToStri("hh'h 'mm'min'");
+                    Console.WriteLine($"Battery full in {untilFull} (delivering {flow}mAh)");
+                    break;
+                case BatteryState.Discharging:
+                    var untilEmpty = PinePhoneBattery.GetTimeUntilEmpty()ToStri("hh'h 'mm'min'");
+                    Console.WriteLine($"Battery empty in {untilEmpty} (drawing {flow}mAh)");
+                    break;
+            }
+            Thread.Sleep(1000);
         }
     }
-```
-#### Event based Hardware Key handling
-```cs
-
-// All in one
-HardwareButtons.OnKeyStateChanged += (buttonState)=>
-{
-    Console.WriteLine($"Power Pressed: {buttonState.PowerKeyDown}, Vol Up Perssed: {buttonState.VolumeDownKeyDown}, Vol Down Pressed: {buttonState.VolumeUpKeyDown}");
-};
-
-// Both Volume Buttons
-HardwareButtons.OnVolumeKeyStateChanged += (buttonState)=>
-{
-    Console.WriteLine($"Vol Up Perssed: {buttonState.VolumeDownKeyDown}, Vol Down Pressed: {buttonState.VolumeUpKeyDown}");
-};
-
-// Individual events for each button
-HardwareButtons.OnVolumeDownKeyStateChanged += (down)=>
-{
-    Console.WriteLine($"VolumeDown: {(down ? "Pressed!" : "Released!")}");
-};
-HardwareButtons.OnVolumeUpKeyStateChanged += (down)=>
-{
-    Console.WriteLine($"VolumeUp: {(down ? "Pressed!" : "Released!")}");
-};
-HardwareButtons.OnPowerKeyStateChanged += (down)=>
-{
-    Console.WriteLine($"PowerButon: {(down ? "Pressed!" : "Released!")}");
-};
+}
 ```

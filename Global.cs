@@ -5,8 +5,6 @@ using PinePhoneCore.Helpers;
 using PinePhoneCore.Enums;
 using PinePhoneCore.PinePhoneHelpers;
 using System.Threading.Tasks;
-using System.Runtime.InteropServices;
-using System.IO;
 
 namespace PinePhoneCore
 {
@@ -19,22 +17,10 @@ namespace PinePhoneCore
             //SoC.CpuCores[1].Enabled = !SoC.CpuCores[1].Enabled;
             //SoC.CpuCores[3].Enabled = !SoC.CpuCores[3].Enabled;
             //
-            HardwareButtons.OnKeyStateChanged += (buttonState)=>
-            {
-                Console.WriteLine($"Power Pressed: {buttonState.PowerKeyDown}, Vol Up Perssed: {buttonState.VolumeDownKeyDown}, Vol Down Pressed: {buttonState.VolumeUpKeyDown}");
-            };
-            HardwareButtons.OnVolumeDownKeyStateChanged += (down)=>
-            {
-                Console.WriteLine($"VolumeDown: {(down ? "Pressed!" : "Released!")}");
-            };
-            HardwareButtons.OnVolumeUpKeyStateChanged += (down)=>
-            {
-                Console.WriteLine($"VolumeUp: {(down ? "Pressed!" : "Released!")}");
-            };
-            HardwareButtons.OnPowerKeyStateChanged += (down)=>
-            {
-                Console.WriteLine($"PowerButon: {(down ? "Pressed!" : "Released!")}");
-            };
+            HardwareButtons.OnKeyStateChanged += (button,state)=> Console.WriteLine($"{button}{(state ? "pressed" : "released")}");
+            HardwareButtons.OnVolumeDownKeyStateChanged += (down)=> Console.WriteLine($"VolumeDown: {(down ? "Pressed!" : "Released!")}");
+            HardwareButtons.OnVolumeUpKeyStateChanged += (down)=> Console.WriteLine($"VolumeUp: {(down ? "Pressed!" : "Released!")}");
+            HardwareButtons.OnPowerKeyStateChanged += (down)=> Console.WriteLine($"PowerButon: {(down ? "Pressed!" : "Released!")}");
 
             while (true)
             {
