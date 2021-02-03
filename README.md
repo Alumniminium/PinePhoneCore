@@ -53,6 +53,9 @@ Contribute however you like. No rules.
 * Brightness (Get/Set)
 * Backlight Power (Get/Set)
 
+### Hardware Buttons (Power, Volume)
+* Event based KeyUp/Down
+
 ### Headphone Jack
 * Event based plug detection
 * Headphone Kind (Headset, Headphones)
@@ -61,6 +64,12 @@ Contribute however you like. No rules.
 * Sampling Frequency (Get/Set)
 * Scale (Get/Set)
 * Raw/Scaled X,Y,Z
+
+### Modem
+* (WIP) Event based Call detection
+* (WIP) Enabled
+* (TBD) Event based Text detection
+* (TBD) Event based MMS detection
 
 ### Power Supply (axp20x-usb)
 * Status
@@ -130,17 +139,57 @@ static void Main(string[] args)
 #### Event based Headphone jack monitoring 
 
 ```cs
+class Program
+    {
+        public static string DotConfigPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
         static void Main(string[] args)
         {
-            HeadphoneJack.Monitor.OnData = Handler;
+            if (Environment.UserName == "root")
+            {
+                Console.WriteLine("ExitCode 1: Don't run me as root!");
+                Environment.Exit(1);
+            }
+            //HeadphoneJack.OnPluggedIn = Plugged;
+            //HeadphoneJack.OnPluggedOut = Plugged;
+            HeadphoneJack.OnPlugged = Plugged;
 
-            while(true)
+            while (true)
                 Thread.Sleep(int.MaxValue);
         }
 
-        private static void Handler(NativeInputEvent obj)
+        private static void Plugged(HeadphoneKind kind)
         {
-            var dotConfig=Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            Shell.GetValue($"{dotConfig}/sxmo/hooks/headphonejack",$"{HeadphoneJack.Connected}");
+            Shell.Execute($"sh", $"-c \"{DotConfigPath}/sxmo/hooks/headphonejack {HeadphoneJack.Connected}\"");
         }
+    }
+```
+#### Event based Hardware Key handling
+```cs
+
+// All in one
+HardwareButtons.OnKeyStateChanged += (buttonState)=>
+{
+    Console.WriteLine($"Power Pressed: {buttonState.PowerKeyDown}, Vol Up Perssed: {buttonState.VolumeDownKeyDown}, Vol Down Pressed: {buttonState.VolumeUpKeyDown}");
+};
+
+// Both Volume Buttons
+HardwareButtons.OnVolumeKeyStateChanged += (buttonState)=>
+{
+    Console.WriteLine($"Vol Up Perssed: {buttonState.VolumeDownKeyDown}, Vol Down Pressed: {buttonState.VolumeUpKeyDown}");
+};
+
+// Individual events for each button
+HardwareButtons.OnVolumeDownKeyStateChanged += (down)=>
+{
+    Console.WriteLine($"VolumeDown: {(down ? "Pressed!" : "Released!")}");
+};
+HardwareButtons.OnVolumeUpKeyStateChanged += (down)=>
+{
+    Console.WriteLine($"VolumeUp: {(down ? "Pressed!" : "Released!")}");
+};
+HardwareButtons.OnPowerKeyStateChanged += (down)=>
+{
+    Console.WriteLine($"PowerButon: {(down ? "Pressed!" : "Released!")}");
+};
 ```

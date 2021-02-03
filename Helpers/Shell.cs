@@ -6,13 +6,25 @@ namespace PinePhoneCore.Helpers
 {
     public class Shell
     {
-        public static string GetValue(string executable,string arguments)
+        public static string GetValue(string executable, string arguments)
         {
             var cmd = Cli.Wrap(executable).WithArguments(arguments).WithValidation(CommandResultValidation.None).ExecuteBufferedAsync().Task.Result;
             Console.WriteLine($"[{cmd.RunTime.TotalMilliseconds}ms] Command: {executable} {arguments}");
-            //Console.WriteLine($"[{cmd.RunTime}] Command: {executable} {arguments} -> {Environment.NewLine}{cmd.StandardOutput.Trim()}");
             return cmd.StandardOutput.Trim();
-        }        
+        }
+        public static void Execute(string executable, string arguments)
+        {
+            try
+            {
+                var cmd = Cli.Wrap(executable).WithArguments(arguments).WithValidation(CommandResultValidation.None).ExecuteBufferedAsync().Task.Result;
+                Console.WriteLine("StdOut: "+cmd.StandardOutput);
+                Console.WriteLine("StdErr: "+cmd.StandardError);
+            }
+            catch (Exception e)
+            { 
+                Console.WriteLine(e);
+            }
+        }
         public static string FindByPattern(string cmd, string args, string pattern)
         {
             var val = GetValue(cmd, args);

@@ -1,19 +1,34 @@
+using System;
 using System.Text;
 using PinePhoneCore.Enums;
 using PinePhoneCore.Helpers;
 
 namespace PinePhoneCore.Devices
 {
-    public static class HardwareButtons
-    {
-        public static DevInputEventMonitor VolumeButtonMonitor = new DevInputEventMonitor("/dev/input/event3");
-        public static DevInputEventMonitor PowerButtonMonitor = new DevInputEventMonitor("/dev/input/event0");
-    }
     public static class HeadphoneJack
     {
+        public static DevInputEventMonitor Monitor = new DevInputEventMonitor("/dev/input/event4");
+        public static Action<HeadphoneKind> OnPluggedIn;
+        public static Action<HeadphoneKind> OnPluggedOut;
+        public static Action<HeadphoneKind> OnPlugged;
+
         public static bool Connected => Monitor.LastEvent.Value == 1;
         public static HeadphoneKind Kind => (HeadphoneKind)Monitor.LastEvent.Code;
-        public static DevInputEventMonitor Monitor = new DevInputEventMonitor("/dev/input/event4");
+
+        static HeadphoneJack()
+        {
+            Monitor.OnData = Handler;
+        }
+
+        private static void Handler(NativeInputEvent inputEvent)
+        {
+            OnPlugged?.Invoke(Kind);
+            
+            if (inputEvent.Value == 1)
+                OnPluggedIn?.Invoke(Kind);
+            else
+                OnPluggedOut?.Invoke(Kind);
+        }
 
 
         new public static string ToString()
