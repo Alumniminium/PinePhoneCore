@@ -92,6 +92,9 @@ Contribute however you like. No rules.
 * GPU Temp
 * CPU Temp
 
+### Vibrator
+* [WIP] On/Off
+
 ### WiFi
 * Enabled (RFKILL, NMCLI, IFCONFIG, IP) (Get/Set)
 * Connected (NMCLI, IP, IFCONFIG)
@@ -105,7 +108,7 @@ Contribute however you like. No rules.
 ## Install
 
 ```
-dotnet add package PinePhoneCore --version 0.0.1
+dotnet add package PinePhoneCore --version 0.0.21
 ```
 
 ## Use

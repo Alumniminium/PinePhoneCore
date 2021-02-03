@@ -4,7 +4,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
     <PackageId>PinePhoneCore</PackageId>
-    <Version>0.0.2</Version>
+    <Version>0.0.21</Version>
     <Authors>Trbl</Authors>
     <Company>Her.st</Company>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
