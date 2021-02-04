@@ -180,7 +180,7 @@ namespace PinePhoneCore.Devices
             get
             {
                 var ssids = new List<string>();
-                var output = Shell.GetValue("nmcli", "-f ssid dev iwifi").Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
+                var output = Shell.GetValue("nmcli", "-f ssid dev wifi").Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
 
                 for (int i = 1; i < output.Length; i++)
                 {
@@ -188,6 +188,18 @@ namespace PinePhoneCore.Devices
                     ssids.Add(ssid);
                 }
                 return ssids;
+            }
+        }
+
+        public static void Connect(string ssid,string password = "")
+        {
+            if(string.IsNullOrEmpty(password))
+            {
+                Shell.Execute("nmcli",$"connection up {ssid}");
+            }
+            else
+            {
+                Shell.Execute("nmcli",$"dev wifi connect {ssid} password {password}");
             }
         }
 
