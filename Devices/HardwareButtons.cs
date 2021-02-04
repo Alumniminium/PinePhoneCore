@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 using PinePhoneCore.Helpers;
+using PinePhoneCore.Enums;
 
 namespace PinePhoneCore.Devices
 {

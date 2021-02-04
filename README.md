@@ -66,10 +66,10 @@ Contribute however you like. No rules.
 * Raw/Scaled X,Y,Z
 
 ### Modem
-* (WIP) Event based Call detection
-* (WIP) Enabled
-* (TBD) Event based Text detection
-* (TBD) Event based MMS detection
+* [WIP] Event based Call detection
+* [WIP] Enabled
+* [TBD] Event based Text detection
+* [TBD] Event based MMS detection
 
 ### Power Supply (axp20x-usb)
 * Status

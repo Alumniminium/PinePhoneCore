@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Threading;
 
 namespace PinePhoneCore.Helpers
@@ -20,14 +21,12 @@ namespace PinePhoneCore.Helpers
         }
         private void MonitorLoop()
         {
-            var handle = NativeCode.Open(Path, 2);
-            if (handle == -1)
-                return;
+            using var file = new FileStream(Path,FileMode.Open,FileAccess.Read);
+            var buffer = new byte[512];
 
-            var buffer = new byte[128]; // 78 bytes
             while (true)
             {
-                int lengthOfDataInBuffer = NativeCode.Read(handle, buffer, buffer.Length);
+                int lengthOfDataInBuffer = file.Read(buffer,0, buffer.Length);
                 var seconds = BitConverter.ToUInt64(buffer, 0);
                 var microseconds = BitConverter.ToUInt64(buffer, 8);
                 var type = BitConverter.ToUInt16(buffer, 16);

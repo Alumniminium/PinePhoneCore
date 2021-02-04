@@ -10,6 +10,7 @@ namespace PinePhoneCore.Devices
         public static DevInputEventMonitor Monitor = new DevInputEventMonitor("/dev/input/event4");
         public static Action<HeadphoneKind> OnPluggedIn;
         public static Action<HeadphoneKind> OnPluggedOut;
+        public static Action<NativeInputEvent> OnPluggedRaw;
         public static Action<HeadphoneKind> OnPlugged;
 
         public static bool Connected => Monitor.LastEvent.Value == 1;
@@ -22,6 +23,7 @@ namespace PinePhoneCore.Devices
 
         private static void Handler(NativeInputEvent inputEvent)
         {
+            OnPluggedRaw?.Invoke(inputEvent);
             OnPlugged?.Invoke(Kind);
             
             if (inputEvent.Value == 1)

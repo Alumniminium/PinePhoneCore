@@ -17,6 +17,10 @@ namespace PinePhoneCore
             //SoC.CpuCores[1].Enabled = !SoC.CpuCores[1].Enabled;
             //SoC.CpuCores[3].Enabled = !SoC.CpuCores[3].Enabled;
             //
+            HeadphoneJack.OnPluggedRaw+= (d)=>
+            {
+                Console.WriteLine($"Code: {d.Code}, Type: {d.Type}, Value: {d.Value}");
+            };
             HardwareButtons.OnKeyStateChanged += (button,state)=> Console.WriteLine($"{button}{(state ? "pressed" : "released")}");
             HardwareButtons.OnVolumeDownKeyStateChanged += (down)=> Console.WriteLine($"VolumeDown: {(down ? "Pressed!" : "Released!")}");
             HardwareButtons.OnVolumeUpKeyStateChanged += (down)=> Console.WriteLine($"VolumeUp: {(down ? "Pressed!" : "Released!")}");
