@@ -1,36 +1,62 @@
 ﻿using System;
 using System.Threading;
-using PinePhoneCore.Devices;
 using PinePhoneCore.Helpers;
 using PinePhoneCore.Enums;
 using PinePhoneCore.PinePhoneHelpers;
+using System.IO;
 using System.Threading.Tasks;
+using System.Text;
+using System.Linq;
+using PinePhoneCore.Devices;
 
 namespace PinePhoneCore
 {
-    class Global
+    public static class Test
     {
-        static async Task Main(string[] args)
+        public static string HexDump(byte[] bytes, int bytesPerLine)
         {
-            await Dependencies.TestDependencies();
-
+            StringBuilder sb = new StringBuilder();
+            for (int line = 0; line < bytes.Length; line += bytesPerLine)
+            {
+                byte[] lineBytes = bytes.Skip(line).Take(bytesPerLine).ToArray();
+                sb.AppendFormat("{0:x8} ", line);
+                sb.Append(string.Join(" ", lineBytes.Select(b => b.ToString("x2"))
+                       .ToArray()).PadRight(bytesPerLine * 3));
+                sb.Append(" ");
+                sb.Append(new string(lineBytes.Select(b => b < 32 ? '.' : (char)b)
+                       .ToArray()));
+                sb.Append(Environment.NewLine);
+            }
+            return sb.ToString();
+        }
+        
+        public static void Main(string[] args)
+        {
+            Dependencies.TestDependencies().GetAwaiter().GetResult();
+            
             //SoC.CpuCores[1].Enabled = !SoC.CpuCores[1].Enabled;
             //SoC.CpuCores[3].Enabled = !SoC.CpuCores[3].Enabled;
             //
+            //Digitizer.OnEvent += (e) =>
+            //{
+            //    Console.WriteLine($"Code: {e.Code}, Type: {e.Type}, Value: {e.Value}");
+            //};
+            Digitizer.OnPositionChanged += (p) => Console.WriteLine($"Position: {p.X},{p.Y} - Finger #{p.FingerIndex}{(p.FingerDown ? "pressed" : "released")}");
+            
             HeadphoneJack.OnPluggedRaw += (d) =>
-             {
-                 Console.WriteLine($"Code: {d.Code}, Type: {d.Type}, Value: {d.Value}");
-             };
+            {
+                Console.WriteLine($"Code: {d.Code}, Type: {d.Type}, Value: {d.Value}");
+            };
             HardwareButtons.OnKeyStateChanged += (button, state) => Console.WriteLine($"{button}{(state ? "pressed" : "released")}");
             HardwareButtons.OnVolumeDownKeyStateChanged += (down) => Console.WriteLine($"VolumeDown: {(down ? "Pressed!" : "Released!")}");
             HardwareButtons.OnVolumeUpKeyStateChanged += (down) => Console.WriteLine($"VolumeUp: {(down ? "Pressed!" : "Released!")}");
             HardwareButtons.OnPowerKeyStateChanged += (down) => Console.WriteLine($"PowerButon: {(down ? "Pressed!" : "Released!")}");
 
-            Console.WriteLine("Connecting to wifi");
-            WiFi.Enabled_NMCLI = true;
-            WiFi.Connect("fsociety");
-            Console.WriteLine("Connected: " + WiFi.IsConnected_NMCLI);
-            Console.WriteLine();
+            // Console.WriteLine("Connecting to wifi");
+            // WiFi.Enabled_NMCLI = true;
+            // WiFi.Connect("fsociety");
+            // Console.WriteLine("Connected: " + WiFi.IsConnected_NMCLI);
+            // Console.WriteLine();
 
             while (true)
             {

@@ -22,8 +22,7 @@ namespace PinePhoneCore.Helpers
 
         public static async Task TestDependencies()
         {
-            var copyFound = new Dictionary<string, bool>(Found);
-            foreach (var kvp in copyFound)
+            foreach (var kvp in Found)
             {
                 try
                 {
@@ -31,7 +30,10 @@ namespace PinePhoneCore.Helpers
                     Found[kvp.Key] = true;
                     Console.WriteLine($"Found {kvp.Key}");
                 }
-                catch { }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
             }
         }
     }

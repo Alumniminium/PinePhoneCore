@@ -1,6 +1,6 @@
 /dev/input/event0 = hw power button
 /dev/input/event1 = touchscreen
-/dev/input/event2 = GPIO related, not sure INCOMING CALLS
+/dev/input/event2 = INCOMING CALLS
 /dev/input/event3 = hw vol up/down buttons
 
 /dev/input/event4 = headphone jack

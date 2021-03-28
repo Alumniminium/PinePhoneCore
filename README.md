@@ -107,11 +107,12 @@ Contribute however you like. No rules.
 * Signal/Noise Level (IWCONFIG)
 * Link Quality (IWCONFIG)
 * Scan (IW, IWLIST, NMCLI)
+* Connect (NMCLI)
 
 ## Install
 
 ```
-dotnet add package PinePhoneCore --version 0.0.21
+dotnet add package PinePhoneCore
 ```
 
 ## Use

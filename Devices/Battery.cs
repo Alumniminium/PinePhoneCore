@@ -36,7 +36,6 @@ namespace PinePhoneCore.Devices
             set => File.WriteAllText($"{PATH}/constant_charge_current_max", (value * 1000f).ToString());
         }
         public static float CurrentFlow => int.Parse(File.ReadAllText($"{PATH}/current_now")) / 1000f;
-
         new public static string ToString()
         {
             var sb = new StringBuilder();

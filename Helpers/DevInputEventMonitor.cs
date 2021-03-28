@@ -22,15 +22,17 @@ namespace PinePhoneCore.Helpers
         private void MonitorLoop()
         {
             using var file = new FileStream(Path,FileMode.Open,FileAccess.Read);
-            var buffer = new byte[512];
+            var buffer = new byte[24];
 
             while (true)
             {
                 int lengthOfDataInBuffer = file.Read(buffer,0, buffer.Length);
+                if(lengthOfDataInBuffer<24)
+                    continue;
                 var seconds = BitConverter.ToUInt64(buffer, 0);
                 var microseconds = BitConverter.ToUInt64(buffer, 8);
                 var type = BitConverter.ToUInt16(buffer, 16);
-                var code = BitConverter.ToUInt16(buffer, 18);
+                var code = BitConverter.ToInt16(buffer, 18);
                 var val = BitConverter.ToUInt32(buffer, 20);
 
                 LastEvent = new NativeInputEvent
