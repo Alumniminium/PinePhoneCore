@@ -7,39 +7,57 @@ namespace PinePhoneCore.Devices
     public static class Digitizer
     {
         static DevInputEventMonitor Monitor = new DevInputEventMonitor("/dev/input/event1");
-        static DigitizerState[] LastState;
-        static int LastFingerIndex;
-        
+        static DigitizerState[] CurrentStates;
+        static int CurrentFingerIndex;
+
         public static Action<NativeInputEvent> OnEvent;
         public static Action<DigitizerState> OnPositionChanged;
-        
+        public static Action<DigitizerState> OnStopTouching;
+        public static Action<DigitizerState> OnTouching;
+        public static Action<int> OnFingerAdded;
+        public static Action<int> OnFingerRemoved;
+
         static Digitizer()
         {
-            LastState = new DigitizerState[10];
+            CurrentStates = new DigitizerState[10];
             Monitor.OnData = Handler;
         }
 
-        private static void Handler(NativeInputEvent inputEvent)
+        private static void Handler(NativeInputEvent newState)
         {
-            OnEvent?.Invoke(inputEvent);
+            OnEvent?.Invoke(newState);
 
-            switch (inputEvent.Code)
+            switch (newState.Code)
             {
                 case 47:
-                    LastFingerIndex = (int)inputEvent.Value;
-                    LastState[LastFingerIndex].FingerIndex = (byte)inputEvent.Value;
+                    CurrentFingerIndex = (int)newState.Value;
+                    CurrentStates[CurrentFingerIndex].FingerIndex = (byte)newState.Value;
                     break;
-                case 53: 
-                    LastState[LastFingerIndex].X = (ushort)inputEvent.Value;
-                    OnPositionChanged?.Invoke(LastState[LastFingerIndex]);
+                case 57:
+                    CurrentStates[CurrentFingerIndex].FingerDown = ((int)newState.Value) != -1;
+                    
+                    if (!CurrentStates[CurrentFingerIndex].FingerDown)
+                        OnFingerRemoved(CurrentFingerIndex);
+                    else
+                        OnFingerAdded(CurrentFingerIndex);
                     break;
-                case 54: 
-                    LastState[LastFingerIndex].Y = (ushort)inputEvent.Value;
-                    OnPositionChanged?.Invoke(LastState[LastFingerIndex]);
+                case 53:
+                    CurrentStates[CurrentFingerIndex].X = (ushort)newState.Value;
+
+                    OnPositionChanged?.Invoke(CurrentStates[CurrentFingerIndex]);
                     break;
-                case 330: 
-                    LastState[LastFingerIndex].FingerDown = inputEvent.Value == 1;
-                    OnPositionChanged?.Invoke(LastState[LastFingerIndex]);
+                case 54:
+                    CurrentStates[CurrentFingerIndex].Y = (ushort)newState.Value;
+
+                    OnPositionChanged?.Invoke(CurrentStates[CurrentFingerIndex]);
+                    break;
+                case 330:
+                    CurrentStates[CurrentFingerIndex].FingerDown = newState.Value == 1;
+
+                    if (CurrentStates[CurrentFingerIndex].FingerDown)
+                        OnTouching?.Invoke(CurrentStates[CurrentFingerIndex]);
+                    else
+                        OnStopTouching?.Invoke(CurrentStates[CurrentFingerIndex]);
                     break;
             }
         }

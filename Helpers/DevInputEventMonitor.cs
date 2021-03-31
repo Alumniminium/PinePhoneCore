@@ -1,12 +1,36 @@
 using System;
 using System.IO;
+using System.Text;
 using System.Threading;
 
 namespace PinePhoneCore.Helpers
 {
+    public class UeventMon
+    {
+        private Thread monThread;
+        public string Path;
+
+        public UeventMon(string path)
+        {
+            Path = path;
+            monThread = new Thread(MonitorLoop) { IsBackground = true };
+            monThread.Start();
+        }
+        private unsafe void MonitorLoop()
+        {
+            using var file = new FileStream(Path,FileMode.Open,FileAccess.Read,FileShare.Read,4096,true);
+            var buffer = new byte[4096];
+
+            while (true)
+            {
+                var read = file.Read(buffer,0, buffer.Length);
+                Console.WriteLine(Encoding.ASCII.GetString(buffer,0,read));
+            }
+        }
+    }
     public class DevInputEventMonitor
     {
-        private Thread MonitoringThread;
+        private Thread monThread;
         public string Path;
 
         public Action<NativeInputEvent> OnData;
@@ -15,34 +39,22 @@ namespace PinePhoneCore.Helpers
         public DevInputEventMonitor(string path)
         {
             Path = path;
-            MonitoringThread = new Thread(MonitorLoop);
-            MonitoringThread.IsBackground = true;
-            MonitoringThread.Start();
+            monThread = new Thread(MonitorLoop) { IsBackground = true };
+            monThread.Start();
         }
-        private void MonitorLoop()
+        private unsafe void MonitorLoop()
         {
             using var file = new FileStream(Path,FileMode.Open,FileAccess.Read);
             var buffer = new byte[24];
 
             while (true)
             {
-                int lengthOfDataInBuffer = file.Read(buffer,0, buffer.Length);
-                if(lengthOfDataInBuffer<24)
+                if(file.Read(buffer,0, buffer.Length)<24)
                     continue;
-                var seconds = BitConverter.ToUInt64(buffer, 0);
-                var microseconds = BitConverter.ToUInt64(buffer, 8);
-                var type = BitConverter.ToUInt16(buffer, 16);
-                var code = BitConverter.ToInt16(buffer, 18);
-                var val = BitConverter.ToUInt32(buffer, 20);
 
-                LastEvent = new NativeInputEvent
-                {
-                    Seconds = seconds,
-                    Microseconds = microseconds,
-                    Type = type,
-                    Code = code,
-                    Value = val
-                };
+                fixed (byte* p = buffer)
+                    LastEvent = *(NativeInputEvent*)p;
+
                 OnData?.Invoke(LastEvent);
             }
         }

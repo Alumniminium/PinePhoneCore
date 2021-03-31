@@ -66,11 +66,11 @@ Contribute however you like. No rules.
 ### Magnetometer (lis3mdl)
 * Sampling Frequency (Get/Set)
 * Scale (Get/Set)
-* Raw/Scaled X,Y,Z
+* Raw/Scaled X, Y, Z
 
 ### Modem
-* [WIP] Event based Call detection
 * [WIP] Enabled
+* [WIP] Event based Call detection
 * [TBD] Event based Text detection
 * [TBD] Event based MMS detection
 
@@ -94,6 +94,13 @@ Contribute however you like. No rules.
 ### SoC (A64)
 * GPU Temp
 * CPU Temp
+
+### Touchscreen
+* Event Based
+* Finger Up/Down detection events (10 fingers)
+* Touch detection events (When something touches, when nothing touches)
+* Position, X, Y for each finger
+* Tap detection
 
 ### Vibrator
 * [WIP] On/Off

@@ -13,8 +13,16 @@ namespace PinePhoneCore.Devices
         public static bool BCEnabled => File.ReadAllText($"{PATH}/usb_bc_enabled").Trim() == "1";
         public static string Type => File.ReadAllText($"{PATH}/type").Trim();
         public static float MinVoltage => int.Parse(File.ReadAllText($"{PATH}/voltage_min")) / 1000000f;
-        public static float InputCurrentLimit => int.Parse(File.ReadAllText($"{PATH}/input_current_limit")) / 1000f;
-        public static float InputCurrentLimitDCP => int.Parse(File.ReadAllText($"{PATH}/usb_dcp_input_current_limit")) / 1000f;
+        public static float InputCurrentLimit 
+        {
+            get => int.Parse(File.ReadAllText($"{PATH}/input_current_limit")) / 1000f;
+            set => File.WriteAllText($"{PATH}/input_current_limit", $"{value * 1000f}");
+        }
+        public static float InputCurrentLimitDCP 
+        {
+            get => int.Parse(File.ReadAllText($"{PATH}/usb_dcp_input_current_limit")) / 1000f;
+            set => File.WriteAllText($"{PATH}/usb_dcp_input_current_limit", $"{value * 1000f}");
+        }
         public static string Protocol => File.ReadAllText($"{PATH}/usb_type").Split('[')[1].Split(']')[0];
         
         
