@@ -99,7 +99,7 @@ Contribute however you like. No rules.
 * Event Based
 * Finger Up/Down detection events (10 fingers)
 * Touch detection events (When something touches, when nothing touches)
-* Gestures: Directional Swipes (8 directions)
+* Gestures: Directional Swipes (8 directions), Screen Edge Zones with 'zoned' gestures (Eg.: SwipeLeft becomes BottomEdgeSwipeLeft)
 * Position, X, Y for each finger
 * Tap detection
 
