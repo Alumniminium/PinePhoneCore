@@ -42,10 +42,11 @@ namespace PinePhoneCore
             //    Console.WriteLine($"Code: {e.Code}, Type: {e.Type}, Value: {e.Value}");
             //};
             Digitizer.OnPositionChanged += (p) => Console.WriteLine($"Position: {p.X},{p.Y} - Finger #{p.FingerIndex}");
-            Digitizer.OnTouching += (p) => Console.WriteLine($"First Touch!");
-            Digitizer.OnStopTouching += (p) => Console.WriteLine($"Nothing touching the screen anymore");
+            //Digitizer.OnTouching += (p) => Console.WriteLine($"First Touch!");
+            //Digitizer.OnStopTouching += (p) => Console.WriteLine($"Nothing touching the screen anymore");
             Digitizer.OnFingerAdded += (p) => Console.WriteLine($"Finger {p} added");
             Digitizer.OnFingerRemoved += (p) => Console.WriteLine($"Finger {p} removed");
+            Digitizer.OnGesture += (g) => Console.WriteLine($"Gesture: "+g.ToString());
             
             HeadphoneJack.OnPluggedRaw += (d) =>
             {
