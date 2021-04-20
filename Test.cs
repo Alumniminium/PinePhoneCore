@@ -46,8 +46,8 @@ namespace PinePhoneCore
             //Digitizer.OnStopTouching += (p) => Console.WriteLine($"Nothing touching the screen anymore");
             // Digitizer.OnFingerAdded += (p) => Console.WriteLine($"Finger {p} added");
             // Digitizer.OnFingerRemoved += (p) => Console.WriteLine($"Finger {p} removed");
-            Digitizer.OnGesture += (g) => Console.WriteLine($"Gesture: "+g.ToString());
-            
+            EasyGestureSystem.OnGesture += (g) => Console.WriteLine($"Gesture: "+g.ToString());
+             
             HeadphoneJack.OnPluggedRaw += (d) =>
             {
                 Console.WriteLine($"Code: {d.Code}, Type: {d.Type}, Value: {d.Value}");
@@ -59,7 +59,7 @@ namespace PinePhoneCore
 
             //UeventMon m = new UeventMon("/sys/class/power_supply/axp20x-usb/uevent");
 
-            PowerSupply.InputCurrentLimit = 2500;
+            PowerSupply.InputCurrentLimit = 3000;
             PowerSupply.InputCurrentLimitDCP = 2500;
             // Console.WriteLine("Connecting to wifi");
             // WiFi.Enabled_NMCLI = true;

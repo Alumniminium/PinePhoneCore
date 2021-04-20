@@ -5,5 +5,5 @@ namespace PinePhoneCore.Enums
         Unknown =0,
         Charging = 1,
         Discharging =2
-    }    
+    }   
 }
