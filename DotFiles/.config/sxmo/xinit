@@ -11,6 +11,7 @@ xset dpms
 xset s 60 60
 
 dotnet ~/coding/ppjackd/bin/Debug/net6.0/ppjackd.dll > ~/ppjackd.log &
+
 conky -d -c ~/.config/sxmo/conky.conf
 feh --bg-fill ~/.bg
 ~/.local/bin/audioctl.sh s 50

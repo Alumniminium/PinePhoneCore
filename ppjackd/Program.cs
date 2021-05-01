@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Threading;
 using PinePhoneCore.Devices;
 using PinePhoneCore.Enums;
@@ -8,20 +9,19 @@ namespace ppjackd
 {
     class Program
     {
-        public static string HookScript;
+        public static string DotConfigPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+        public static string HookScriptPath = DotConfigPath + "/sxmo/hooks/headphonejack";
 
         static void Main(string[] args)
         {
-            HookScript = CliArgs.Assign(args, "--hook", Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "/sxmo/hooks/headphonejack");
-            HeadphoneJack.OnPlugged = Plugged;
+            var self = Assembly.GetExecutingAssembly();
+            HookScriptPath = CliArgs.Assign(args, "--hook", HookScriptPath);
+            HeadphoneJack.OnPlugged = (k) => Shell.Execute($"sh", $"-c \"{HookScriptPath} {HeadphoneJack.Connected}\"");
 
-            while (true)
-                Thread.Sleep(int.MaxValue);
-        }
-        
-        private static void Plugged(HeadphoneKind kind)
-        {
-            Shell.Execute($"sh", $"-c \"{HookScript} {HeadphoneJack.Connected}\"");
-        }
+            Console.WriteLine($"{self.GetName().Name} {self.GetName().Version} running.");
+            Console.WriteLine($"Hook Script: {HookScriptPath}");
+            Console.WriteLine($"Press any key to exit...");
+            Console.ReadKey();
+        } 
     }
 }
