@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/PinePhoneCore.csproj",
+                "${workspaceFolder}/home/mo/code/ppwake/ppwake.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -19,7 +19,20 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/PinePhoneCore.csproj",
+                "${workspaceFolder}/home/mo/code/ppwake/ppwake.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "watch",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "watch",
+                "run",
+                "${workspaceFolder}/home/mo/code/ppwake/ppwake.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],

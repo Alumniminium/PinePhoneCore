@@ -1,0 +1,24 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="pplauncher.MainWindow"
+        Title="pplauncher">
+        
+        <Window.Styles>
+            <StyleInclude Source="/Styles/Colors.xaml" />
+            <StyleInclude Source="/Styles/Header.xaml" />
+            <StyleInclude Source="/Styles/Buttons.xaml" />
+        </Window.Styles>
+        <StackPanel>
+            <Button Classes="rounded">Chrome</Button>
+            <Button Classes="rounded">Mail</Button>
+            <Button Classes="rounded">Music</Button>
+            <Button Classes="rounded">Video</Button>
+            <TextBlock Classes="h1 Important">-- Internet --</TextBlock>
+            <Button Classes="rounded">YouTube</Button>
+            <Button Classes="rounded">RSS</Button>
+            <Button Classes="rounded">wttr</Button>
+        </StackPanel>
+</Window>

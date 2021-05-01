@@ -1,0 +1,8 @@
+/dev/input/event0 = hw power button - done
+/dev/input/event1 = touchscreen - done
+/dev/input/event2 = INCOMING CALLS
+/dev/input/event3 = hw vol up/down buttons - done
+/dev/input/event4 = headphone jack - done
+/dev/input/event5 = Vibrator
+
+
