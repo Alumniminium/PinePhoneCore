@@ -1,4 +1,0 @@
-
-#!/bin/zsh
-
-dotnet /home/$USER/coding/ppwake/ppwake.dll > /home/mo/ppwake.log 2>&1 &

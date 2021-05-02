@@ -1,0 +1,35 @@
+#!/usr/bin/env sh
+# Please modify this file to your liking
+
+# enter SIM PIN
+sleep 20 && mmcli -i 0 --pin 1649 && sleep 2 && sxmo_modemmonitortoggle.sh on &
+command -v chromium && export BROWSER=chromium
+# Prepopulate Subreddits menu with custom subreddits
+export SXMO_SUBREDDITS="postmarketos pinephoneOfficial pinephone unixporn"
+# Temporarily wake every 60 minutes during sleep
+export SXMO_RTCWAKEINTERVAL=3600
+# Immediately turn the screen off when locking the device
+export SXMO_LOCK_SCREEN_OFF=1
+# When scrolling past the beginning or end of a menu, wrap it around:
+export DMENU_WRAP_AROUND=1
+# Enable audio feedback on keypress
+#export KEYBOARD_ARGS="-o | clickclack -f /usr/share/sxmo/keypress.wav"
+# Enable vibration on keypress
+#export KEYBOARD_ARGS="-o | clickclack -V"
+export EDITOR=/usr/bin/micro
+
+xset dpms
+xset s 60 60
+
+dotnet ~/coding/PinePhone/ppjackd/bin/Debug/net5.0/ppjackd.dll > ~/ppjackd.log &
+dotnet ~/coding/PinePhone/ppmusicsyncd/bin/Debug/net5.0/ppmusicsyncd.dll > ~/ppmusicsyncd.log &
+dotnet ~/coding/PinePhone/PinePhoneCore/bin/Debug/net5.0/PinePhoneCore.dll > ~/PinePhoneCore.log &
+
+conky -d -c ~/.config/sxmo/conky.conf
+feh --bg-fill ~/.bg
+
+# Switch output to speakers and set volume to 50
+~/.local/bin/audioctl.sh s 50
+
+
+st -e sh -c 'lpass login domi@outlook.at' &

@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+
+if [ $1 == "True" ]; then
+    echo "plugged in"
+    audioctl.sh h 60
+else
+    echo "plugged out"
+    audioctl.sh s 50
+fi

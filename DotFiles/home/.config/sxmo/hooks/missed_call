@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+
+# This script is executed (asynchronously) when you missed a call
+# You can use it to play a ring tone
+
+# kill existing ring playback
+MPVID="$(cat "$XDG_RUNTIME_DIR/sxmo.ring.pid")"
+kill $MPVID
+rm "$XDG_RUNTIME_DIR/sxmo.ring.pid"

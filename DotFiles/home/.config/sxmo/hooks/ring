@@ -1,0 +1,15 @@
+#!/usr/bin/env sh
+
+# This script is executed (asynchronously) when you get an incoming call
+# You can use it to play a ring tone
+
+# Start the mpv ring until another hook kill it
+mpv --quiet --no-video --loop /usr/share/sxmo/ring.ogg &
+MPVID=$!
+echo "$MPVID" > "$XDG_RUNTIME_DIR/sxmo.ring.pid"
+
+# Vibrate while mpv is running
+while kill -0 $MPVID; do
+                sxmo_vibratepine 1500
+                sleep 0.5
+done

@@ -16,7 +16,7 @@ namespace ppjackd
         {
             var self = Assembly.GetExecutingAssembly();
             HookScriptPath = CliArgs.Assign(args, "--hook", HookScriptPath);
-            HeadphoneJack.OnPlugged = (k) => Shell.Execute($"sh", $"-c \"{HookScriptPath} {HeadphoneJack.Connected}\"");
+            HeadphoneJack.OnPlugged = (k) => Console.WriteLine(Shell.GetValue($"sh", $"-c \"{HookScriptPath} {HeadphoneJack.Connected}\""));
 
             Console.WriteLine($"{self.GetName().Name} {self.GetName().Version} running.");
             Console.WriteLine($"Hook Script: {HookScriptPath}");
