@@ -4,11 +4,9 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
     <Version>1.0</Version>
-  </PropertyGroup>
-  
-  
+  </PropertyGroup>  
   <ItemGroup>
-    <ProjectReference Include="../PinePhoneCore/PinePhoneCore.csproj"/>
+    <ProjectReference Include="../../src/PinePhoneCore.csproj"/>
   </ItemGroup>
 
 </Project>

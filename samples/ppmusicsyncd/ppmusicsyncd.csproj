@@ -5,6 +5,6 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="../PinePhoneCore/PinePhoneCore.csproj"/>
+    <ProjectReference Include="../../src/PinePhoneCore.csproj"/>
   </ItemGroup>
 </Project>
