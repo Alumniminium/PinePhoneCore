@@ -12,16 +12,18 @@ namespace PinePhoneCore.Helpers
             Console.WriteLine($"[{cmd.RunTime.TotalMilliseconds}ms] Command: {executable} {arguments}");
             return cmd.StandardOutput.Trim();
         }
-        public static void Execute(string executable, string arguments)
+        public static void Execute(string executable, string arguments, bool quiet = true)
         {
             try
             {
                 var cmd = Cli.Wrap(executable).WithArguments(arguments).WithValidation(CommandResultValidation.None).ExecuteBufferedAsync().Task.Result;
-                Console.WriteLine("StdOut: "+cmd.StandardOutput);
-                Console.WriteLine("StdErr: "+cmd.StandardError);
+                if (quiet)
+                    return;
+                Console.WriteLine("StdOut: " + cmd.StandardOutput);
+                Console.WriteLine("StdErr: " + cmd.StandardError);
             }
             catch (Exception e)
-            { 
+            {
                 Console.WriteLine(e);
             }
         }

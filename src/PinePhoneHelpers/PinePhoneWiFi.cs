@@ -138,10 +138,10 @@ namespace PinePhoneCore.PinePhoneHelpers
 
         public static List<string> Scan()
         {
-            if (Dependencies.Found["iw"])
-                return WiFi.Scan_IW;
-            else if (Dependencies.Found["iwlist"])
+            if (Dependencies.Found["iwlist"])
                 return WiFi.Scan_IWLIST;
+            else if (Dependencies.Found["iw"])
+                return WiFi.Scan_IW;
             else if (Dependencies.Found["nmcli"])
                 return WiFi.Scan_NMCLI;
             else

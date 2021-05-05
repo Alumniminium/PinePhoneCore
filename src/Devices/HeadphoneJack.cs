@@ -7,7 +7,7 @@ namespace PinePhoneCore.Devices
 {
     public static class HeadphoneJack
     {
-        public static DevInputEventMonitor Monitor = new DevInputEventMonitor("/dev/input/event4");
+        public static DevInputEventMonitor Monitor = new DevInputEventMonitor("/dev/input/event5");
         public static Action<HeadphoneKind> OnPluggedIn;
         public static Action<HeadphoneKind> OnPluggedOut;
         public static Action<NativeInputEvent> OnPluggedRaw;
@@ -26,9 +26,9 @@ namespace PinePhoneCore.Devices
             OnPluggedRaw?.Invoke(inputEvent);
             OnPlugged?.Invoke(Kind);
             
-            if (inputEvent.Value == 1)
+            if (inputEvent.Code == 2 && inputEvent.Value == 1)
                 OnPluggedIn?.Invoke(Kind);
-            else
+            else if (inputEvent.Code == 2 && inputEvent.Value == 0)
                 OnPluggedOut?.Invoke(Kind);
         }
 

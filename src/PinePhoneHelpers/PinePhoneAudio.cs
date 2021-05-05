@@ -5,7 +5,15 @@ namespace PinePhoneCore.Helpers
 {
     public static class PinePhoneAudio
     {
-        static Dictionary<AudioDevice, string> AudioDeviceLookup = new Dictionary<AudioDevice, string>();
+        static Dictionary<AudioDevice, string> AudioDeviceLookup = new Dictionary<AudioDevice, string>
+        {
+            [AudioDevice.DAC] = "DAC",
+            [AudioDevice.Earpiece] = "Earpiece",
+            [AudioDevice.EarpieceSource] = "Earpiece Source",
+            [AudioDevice.Headphones] = "Headphone",
+            [AudioDevice.OutputSource] = "Line Out Source",
+            [AudioDevice.Speakers] = "Line Out",
+        };
         public static void MuteOutputDevice(AudioDevice device, bool mute = false)
         {
             var dev = AudioDeviceLookup[device];

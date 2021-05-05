@@ -9,7 +9,7 @@ namespace PinePhoneCore.Helpers
             if (Environment.UserName != user)
                 Shell.Execute("su", $"{user} -c \"notify-send '{message}' -t {(int)timeout.TotalMilliseconds}\"");
             else
-                Shell.Execute("notify-send", $"\"{message}\" -t {timeout}");
+                Shell.Execute("notify-send", $"\"{message}\" -t {(int)timeout.TotalMilliseconds}");
         }
     }
 }
