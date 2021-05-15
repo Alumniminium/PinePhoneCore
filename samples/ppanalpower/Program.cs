@@ -10,66 +10,72 @@ namespace ppanalpower
 {
     public static class Program
     {
-        public const int SAMPLE_FREQUENCY_MS=125;
-        public const int SAMPLES_PER_ROUND =64;
+        public const int SAMPLE_FREQUENCY_MS = 125;
+        public const int SAMPLES_PER_ROUND = 64;
         public static Random Random = new Random(1337);
         public static Dictionary<int, List<int>> AveragesForBrightnessLevel = new Dictionary<int, List<int>>
         {
-            [0] = new List<int>(),[100] = new List<int>(),[200] = new List<int>(),[300] = new List<int>(),
-            [400] = new List<int>(),[500] = new List<int>(),[600] = new List<int>(),[700] = new List<int>(),
-            [800] = new List<int>(),[900] = new List<int>(),[1000] = new List<int>(),
+            [0] = new List<int>(),
+            [100] = new List<int>(),
+            [200] = new List<int>(),
+            [300] = new List<int>(),
+            [400] = new List<int>(),
+            [500] = new List<int>(),
+            [600] = new List<int>(),
+            [700] = new List<int>(),
+            [800] = new List<int>(),
+            [900] = new List<int>(),
+            [1000] = new List<int>(),
         };
-        public static List<int> brightnesses = new List<int> { 0,100,200,300,400,500, 600,700,800,900,1000 };
+        public static List<int> brightnesses = new List<int> { 0, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000 };
         public static StreamWriter fs = new StreamWriter("power.log");
 
         public static (int, int) ConsolePosition = (0, 0);
+
         public static void Main(string[] args)
         {
             Display.Brightness = 1000;
-            Console.WriteLine("    0%    10%   20%   30%   40%   50%   60%   70%   80%   90%   100%");
-            while (true)
+            for (int i = 0;;i++)
             {
+                if(i==0 || i % 10 == 0)
+                    Console.WriteLine("    0%    10%   20%   30%   40%   50%   60%   70%   80%   90%   100%");
+                    
                 ConsolePosition = Console.GetCursorPosition();
                 brightnesses.Shuffle();
-                TestBrightnesses();
+                foreach (var brightness in brightnesses)
+                    RunRounds(brightness);
                 Console.WriteLine();
             }
         }
 
-        private static void TestBrightnesses()
+        private static void RunRounds(int brightness)
         {
             var samples = new List<int>();
-            foreach (var brightness in brightnesses)
+            Display.Brightness = brightness;
+            while (true)
             {
-                Display.Brightness = brightness;
-                while (true)
+                samples.Add(PinePhoneBattery.GetChargeFlowMilliAmps());
+
+                if (samples.Count == SAMPLES_PER_ROUND)
                 {
-                    var state = PinePhoneBattery.GetState();
-                    samples.Add((int)PinePhoneBattery.GetChargeFlowMilliAmps());
+                    var avg = samples.Sum() / samples.Count;
+                    samples.Clear();
 
-                    if (samples.Count == SAMPLES_PER_ROUND)
-                    {
-                        var avg = samples.Sum() / samples.Count;
-                        samples.Clear();
-
-                        AveragesForBrightnessLevel[brightness].Add(avg);
-                        var overallAvg = AveragesForBrightnessLevel[brightness].Sum() / AveragesForBrightnessLevel[brightness].Count;
-                        Log(brightness, avg, overallAvg);
-                        break;
-                    }
-                    Thread.Sleep(SAMPLE_FREQUENCY_MS);
+                    AveragesForBrightnessLevel[brightness].Add(avg);
+                    Log(brightness, avg);
+                    break;
                 }
+                Thread.Sleep(SAMPLE_FREQUENCY_MS);
             }
         }
-
-        private static void Log(int brightness, int avg, int overallAvg)
+        private static void Log(int brightness, int avg)
         {
-            static string _avgFor(int brightness) => (AveragesForBrightnessLevel[brightness].Sum() / AveragesForBrightnessLevel[brightness].Count).ToString("000");
+            string _avgFor(int brightness) => (AveragesForBrightnessLevel[brightness].Sum() / Math.Max(1, AveragesForBrightnessLevel[brightness].Count)).ToString("000");
 
             Console.SetCursorPosition(ConsolePosition.Item1, ConsolePosition.Item2);
             Console.Write($"{AveragesForBrightnessLevel[brightness].Count}. {_avgFor(0)}mA {_avgFor(100)}mA {_avgFor(200)}mA {_avgFor(300)}mA {_avgFor(400)}mA {_avgFor(500)}mA {_avgFor(600)}mA {_avgFor(700)}mA {_avgFor(800)}mA {_avgFor(900)}mA {_avgFor(1000)}mA");
-            
-            fs.WriteLine($"{Display.Brightness},{avg},{overallAvg} ({AveragesForBrightnessLevel[brightness].Count} samples)");
+
+            fs.WriteLine($"{Display.Brightness},{avg},{_avgFor(brightness)} ({AveragesForBrightnessLevel[brightness].Count} samples)");
             fs.Flush();
         }
 
