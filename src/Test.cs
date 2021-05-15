@@ -1,14 +1,8 @@
 ﻿using System;
-using System.Threading;
 using PinePhoneCore.Helpers;
-using PinePhoneCore.Enums;
-using PinePhoneCore.PinePhoneHelpers;
-using System.IO;
-using System.Threading.Tasks;
 using System.Text;
 using System.Linq;
 using PinePhoneCore.Devices;
-using System.Collections.Generic;
 
 namespace PinePhoneCore
 {
@@ -47,26 +41,13 @@ namespace PinePhoneCore
             //Digitizer.OnStopTouching += (p) => Console.WriteLine($"Nothing touching the screen anymore");
             //Digitizer.OnFingerAdded += (p) => Console.WriteLine($"Finger {p} added");
             //Digitizer.OnFingerRemoved += (p) => Console.WriteLine($"Finger {p} removed");
-            EasyGestureSystem.OnGesture += (g) => Console.WriteLine(g.ToString());
+            //EasyGestureSystem.OnGesture += (g) => Console.WriteLine(g.ToString());
 
             //var topZone =new GestureZone("top",0, 0, EasyGestureSystem.SCREEN_WIDTH, EasyGestureSystem.ZONE_THICKNESS);
             //var bottomZone = new GestureZone("bottom",0, EasyGestureSystem.SCREEN_HEIGHT-EasyGestureSystem.ZONE_THICKNESS, EasyGestureSystem.SCREEN_WIDTH, EasyGestureSystem.ZONE_THICKNESS);
             //var leftZone = new GestureZone("left",0, 0, EasyGestureSystem.ZONE_THICKNESS, EasyGestureSystem.SCREEN_HEIGHT);
             //var rightZone = new GestureZone("right",EasyGestureSystem.SCREEN_WIDTH-EasyGestureSystem.ZONE_THICKNESS, 0, EasyGestureSystem.ZONE_THICKNESS, EasyGestureSystem.SCREEN_HEIGHT);
             //
-            //var zones = new List<GestureZone>
-            //{
-            //    topZone,
-            //    rightZone,
-            //    bottomZone,
-            //    leftZone
-            //};
-//
-            //foreach(var zone in zones)
-            //{
-            //    zone.OnGesture += (g) => Console.WriteLine(zone.Name+": "+g);
-            //}
-//
             //EasyGestureSystem.AddZones(zones);
 //
 //
@@ -79,36 +60,8 @@ namespace PinePhoneCore
             //HardwareButtons.OnVolumeUpKeyStateChanged += (down) => Console.WriteLine($"VolumeUp: {(down ? "Pressed!" : "Released!")}");
             //HardwareButtons.OnPowerKeyStateChanged += (down) => Console.WriteLine($"PowerButon: {(down ? "Pressed!" : "Released!")}");
 //
-            //UeventMon m = new UeventMon("/sys/class/power_supply/axp20x-usb/uevent");
-
             PowerSupply.InputCurrentLimit = 3000;
-            PowerSupply.InputCurrentLimitDCP = 2500;
-            // Console.WriteLine("Connecting to wifi");
-            // WiFi.Enabled_NMCLI = true;
-            // WiFi.Connect("fsociety");
-            // Console.WriteLine("Connected: " + WiFi.IsConnected_NMCLI);
-            // Console.WriteLine();
-
-            while (true)
-            {
-                // var state = PinePhoneBattery.GetState();
-
-                // switch (state)
-                // {
-                //     case BatteryState.Unknown:
-                //         break;
-                //     case BatteryState.Charging:
-                //         Console.WriteLine($"Battery ({PinePhoneBattery.GetChargePercentage()}%) full in {PinePhoneBattery.GetTimeUntilFull().ToString("hh'h 'mm'min'")} (delivering {PinePhoneBattery.GetChargeFlowMilliAmps()} mAh)");
-                //         break;
-                //     case BatteryState.Discharging:
-                //         Console.WriteLine($"Battery ({PinePhoneBattery.GetChargePercentage()}%) empty in {PinePhoneBattery.GetTimeUntilEmpty().ToString("hh'h 'mm'min'")} (drawing {PinePhoneBattery.GetChargeFlowMilliAmps()} mAh)");
-                //         break;
-                //         case BatteryState.Full:
-                //         Console.WriteLine($"Battery Full ({PinePhoneBattery.GetChargePercentage()}%): using {PinePhoneBattery.GetChargeFlowMilliAmps()} mAh");
-                //         break;
-                // }
-                Thread.Sleep(10000);
-            }
+            PowerSupply.InputCurrentLimitDCP = 2500;   
         }
     }
 }

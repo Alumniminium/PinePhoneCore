@@ -6,3 +6,30 @@
 /dev/input/event5 = Vibrator
 
 
+Arch 5.12
+
+Screen On 109/1000 =         ~510mA
+Screen On 208/1000 =         ~520mA
+Screen On 307/1000 =         ~534mA
+Screen On 406/1000 =         ~561mA
+Screen On 505/1000 =         ~585mA
+Screen On 604/1000 =         ~613mA
+Screen On 703/1000 =         ~671mA
+Screen On 802/1000 =         ~750mA
+Screen On 901/1000 =         ~787mA
+Screen On 1000/1000 =        ~850mA
+
+Screen On 109/1000 + mpv =   ~510mA
+Screen On 208/1000 + mpv =   ~550mA
+Screen On 307/1000 + mpv =   ~580mA
+Screen On 406/1000 + mpv =   ~600mA
+Screen On 505/1000 + mpv =   ~620mA
+Screen On 604/1000 + mpv =   ~640mA
+Screen On 703/1000 + mpv =   ~670mA
+Screen On 802/1000 + mpv =   ~770mA
+Screen On 901/1000 + mpv =   ~790mA
+Screen On 1000/1000 + mpv =  ~880mA
+
+Screen off =                                     ~350mA
+Screen off + mpv (audio, headphones) =           ~380mA 
+Screen off + mpv (audio, headphones) + 2 LEDs =  ~400mA 

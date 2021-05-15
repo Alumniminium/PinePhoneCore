@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
+using System.Threading;
 using PinePhoneCore.Devices;
 using PinePhoneCore.Enums;
 using PinePhoneCore.Helpers;
@@ -8,6 +10,11 @@ namespace ppjackd
 {
     class Program
     {
+        public static List<string> SuspendList = new List<string>
+        {
+            "mpv",
+            "lollypop"
+        };
         static void Main(string[] args)
         {
             var self = Assembly.GetExecutingAssembly();
@@ -17,18 +24,30 @@ namespace ppjackd
             {
                 PinePhoneAudio.SetVolumeFor(AudioDevice.Headphones, 55); // dont blow my ears out
                 PinePhoneAudio.SwitchToHeadset(); // Mutes other outputs
-                Shell.Execute("pkill", "-CONT mpv"); // resume mpv if its suspended, my music player of choice.
+                ResumeProcesses();
                 Notification.Display($"Headphones Plugged in!{Environment.NewLine}Resumed mpv!", Environment.UserName, TimeSpan.FromSeconds(10));
             };
             HeadphoneJack.OnPluggedOut = (k) =>
             {
-                Shell.Execute("pkill", "-STOP mpv"); // Suspend mpv before switching on speakers!
+                SuspendProcesses();
                 PinePhoneAudio.SwitchToSpeakers(); // Mutes other outputs
                 Notification.Display($"Headphones Removed!{Environment.NewLine}Suspended mpv!", Environment.UserName, TimeSpan.FromSeconds(10));
             };
 
             Console.WriteLine($"Press any key to exit...");
-            Console.ReadKey();
+            while (true)
+                Thread.Sleep(int.MaxValue);
+        }
+
+        public static void SuspendProcesses()
+        {
+            foreach(var process in SuspendList)
+                Shell.Execute("pkill", $"-STOP {process}");
+        }
+        public static void ResumeProcesses()
+        {
+            foreach(var process in SuspendList)
+                Shell.Execute("pkill", $"-CONT {process}");
         }
     }
 }

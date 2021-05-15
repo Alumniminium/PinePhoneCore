@@ -16,7 +16,7 @@ namespace PinePhoneCore.PinePhoneHelpers
         public static bool IsConnectedToCharger() => PowerSupply.Present;
         public static int GetChargeMilliAmps() => (Battery.Capacity / 100) * Battery.ChargePercent;
         public static byte GetChargePercentage() => Battery.ChargePercent;
-        public static float GetChargeFlowMilliAmps() => Battery.CurrentFlow;
+        public static int GetChargeFlowMilliAmps() => Battery.CurrentFlow;
 
         public static TimeSpan GetTimeUntilEmpty()
         {

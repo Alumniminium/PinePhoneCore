@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using CliWrap;
 using CliWrap.Buffered;
@@ -28,11 +29,11 @@ namespace PinePhoneCore.Helpers
                 {
                     var cmd = await Cli.Wrap(kvp.Key).WithValidation(CommandResultValidation.None).ExecuteBufferedAsync();
                     Found[kvp.Key] = true;
-                    Console.WriteLine($"Found {kvp.Key}");
+                    Debug.WriteLine($"Found {kvp.Key}");
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e);
+                    Debug.WriteLine(e);
                 }
             }
         }
