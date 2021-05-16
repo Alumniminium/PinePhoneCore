@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Text;
 using PinePhoneCore.Helpers;
 
@@ -7,6 +8,12 @@ namespace PinePhoneCore.Devices
     public static class Digitizer
     {
         static DevInputEventMonitor Monitor = new DevInputEventMonitor("/dev/input/event1");
+
+        public static bool Enabled
+        {
+            get => bool.Parse(File.ReadAllText("/sys/bus/i2c/devices/1-005d/input/input1/inhibited"));
+            set => File.WriteAllText("/sys/bus/i2c/devices/1-005d/input/input1/inhibited", value ? "1" : "0");
+        }
         public static DigitizerState[] CurrentStates;
         public static int CurrentFingerIndex;
 

@@ -13,6 +13,7 @@ namespace ppanalpower
         public const int SAMPLE_FREQUENCY_MS = 125;
         public const int SAMPLES_PER_ROUND = 64;
         public static Random Random = new Random(1337);
+        
         public static Dictionary<int, List<int>> AveragesForBrightnessLevel = new Dictionary<int, List<int>>
         {
             [0] = new List<int>(),
@@ -68,6 +69,7 @@ namespace ppanalpower
                 Thread.Sleep(SAMPLE_FREQUENCY_MS);
             }
         }
+        
         private static void Log(int brightness, int avg)
         {
             string _avgFor(int brightness) => (AveragesForBrightnessLevel[brightness].Sum() / Math.Max(1, AveragesForBrightnessLevel[brightness].Count)).ToString("000");
@@ -81,14 +83,12 @@ namespace ppanalpower
 
         public static void Shuffle<T>(this IList<T> list)
         {
-            int n = list.Count;
-            while (n > 1)
+            for(int i = list.Count;i>1;i--)
             {
-                n--;
-                int k = Random.Next(n + 1);
+                int k = Random.Next(i + 1);
                 T value = list[k];
-                list[k] = list[n];
-                list[n] = value;
+                list[k] = list[i];
+                list[i] = value;
             }
         }
     }
