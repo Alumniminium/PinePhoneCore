@@ -12,7 +12,7 @@ namespace PinePhoneCore.Devices
         public static bool Enabled
         {
             get => bool.Parse(File.ReadAllText("/sys/bus/i2c/devices/1-005d/input/input1/inhibited"));
-            set => File.WriteAllText("/sys/bus/i2c/devices/1-005d/input/input1/inhibited", value ? "1" : "0");
+            set => File.WriteAllText("/sys/bus/i2c/devices/1-005d/input/input1/inhibited", value ? "0" : "1");
         }
         public static DigitizerState[] CurrentStates;
         public static int CurrentFingerIndex;

@@ -1,35 +1,13 @@
 /dev/input/event0 = hw power button - done
 /dev/input/event1 = touchscreen - done
-/dev/input/event2 = INCOMING CALLS
+/dev/input/event2 = pogo pins?
 /dev/input/event3 = hw vol up/down buttons - done
-/dev/input/event4 = headphone jack - done
-/dev/input/event5 = Vibrator
+/dev/input/event5 = headphone jack - done
 
 
-Arch 5.12
-
-Screen On 109/1000 =         ~510mA
-Screen On 208/1000 =         ~520mA
-Screen On 307/1000 =         ~534mA
-Screen On 406/1000 =         ~561mA
-Screen On 505/1000 =         ~585mA
-Screen On 604/1000 =         ~613mA
-Screen On 703/1000 =         ~671mA
-Screen On 802/1000 =         ~750mA
-Screen On 901/1000 =         ~787mA
-Screen On 1000/1000 =        ~850mA
-
-Screen On 109/1000 + mpv =   ~510mA
-Screen On 208/1000 + mpv =   ~550mA
-Screen On 307/1000 + mpv =   ~580mA
-Screen On 406/1000 + mpv =   ~600mA
-Screen On 505/1000 + mpv =   ~620mA
-Screen On 604/1000 + mpv =   ~640mA
-Screen On 703/1000 + mpv =   ~670mA
-Screen On 802/1000 + mpv =   ~770mA
-Screen On 901/1000 + mpv =   ~790mA
-Screen On 1000/1000 + mpv =  ~880mA
-
-Screen off =                                     ~350mA
-Screen off + mpv (audio, headphones) =           ~380mA 
-Screen off + mpv (audio, headphones) + 2 LEDs =  ~400mA 
+/dev/input/event4 = Vibrator
+echo "98" > /sys/class/gpio/export # Make pin available
+echo "out" > /sys/class/gpio/gpio98/direction # Set as output
+echo "1" > /sys/class/gpio/gpio98/value # On
+echo "1" > /sys/class/gpio/gpio98/value # Off
+echo "98" > /sys/class/gpio/unexport # When you're done

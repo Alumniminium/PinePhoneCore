@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Threading.Tasks;
 using PinePhoneCore.Devices;
 using PinePhoneCore.Helpers;
@@ -13,6 +14,8 @@ namespace ppmusicsyncd
 
         static async Task Main(string[] args)
         {
+            var self = Assembly.GetExecutingAssembly();
+            Console.WriteLine($"{self.GetName().Name} {self.GetName().Version} running.");
             await Dependencies.TestDependencies();
 
             var currentWifiState = PinePhoneWiFi.IsEnabled();

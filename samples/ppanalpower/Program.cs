@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using PinePhoneCore.Devices;
 using PinePhoneCore.PinePhoneHelpers;
@@ -35,6 +36,8 @@ namespace ppanalpower
 
         public static void Main(string[] args)
         {
+            var self = Assembly.GetExecutingAssembly();
+            Console.WriteLine($"{self.GetName().Name} {self.GetName().Version} running.");
             Display.Brightness = 1000;
             for (int i = 0;;i++)
             {
