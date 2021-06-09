@@ -17,9 +17,9 @@ namespace pplightd
 
             while (true)
             {
-                var lux = (int)AmbientLightSensor.LuminanceRaw;
-              
-                var p = 10 + (lux * 100 / LUX_MAX);
+                var raw = (int)AmbientLightSensor.LuminanceRaw;
+                var lux = (int)AmbientLightSensor.Lux;
+                var p = 10 + (raw * 100 / LUX_MAX);
                 
                 if(p < 30)
                     p+=10;
@@ -33,9 +33,9 @@ namespace pplightd
                     last = brightness;
                     Display.Brightness = brightness;
                     //Fade(brightness);
-                   Console.WriteLine($"Lux: {lux} Brightness: {Display.Brightness} P: {p}");
                 }
-                Thread.Sleep(1000);
+                Thread.Sleep(1000);   
+                Console.WriteLine($"Lux: {lux}, Raw: {raw} Brightness: {Display.Brightness} P: {p}");
             }
         }
 

@@ -33,8 +33,12 @@ namespace PinePhoneCore.Devices
         public static (float integrationTime, float gain) Preset6500ms = (INTEGRATION_TIME_6062080, GAIN_x1);
 
         public const string PATH = "/sys/bus/i2c/devices/2-0048/iio:device1";
+        private const float LUX_RESOLUTION = 0.38f;
+
         public static string Name => File.ReadAllText($"{PATH}/name").Trim();
         public static float LuminanceRaw => float.Parse(File.ReadAllText($"{PATH}/in_illuminance_raw"));
+
+        public static float Lux => LuminanceRaw / Gain * LUX_RESOLUTION * IntegrationTime;
         public static float Gain
         {
             get => float.Parse(File.ReadAllText($"{PATH}/in_illuminance_scale"));

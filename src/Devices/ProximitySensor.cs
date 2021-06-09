@@ -5,6 +5,7 @@ namespace PinePhoneCore.Devices
 {
     public static class ProximitySensor
     {
+        public const float SENSOR_RESOLUTION  = 0.002f;
         public const float INTEGRATION_TIME_0000185 = 0.000185f;
         public const float INTEGRATION_TIME_0000370 = 0.000370f;
         public const float INTEGRATION_TIME_0000741 = 0.000741f;
@@ -35,6 +36,7 @@ namespace PinePhoneCore.Devices
         public const string PATH="/sys/bus/i2c/devices/2-0048/iio:device1";
         public static string Name => File.ReadAllText($"{PATH}/name").Trim();
         public static float Proximity => float.Parse(File.ReadAllText($"{PATH}/in_proximity_raw"));
+        public static float Millimeters => (ushort.MaxValue - Proximity) / Gain * SENSOR_RESOLUTION * IntegrationTime;
         public static float Gain 
         {
             get=>float.Parse(File.ReadAllText($"{PATH}/in_proximity_scale"));
@@ -45,7 +47,7 @@ namespace PinePhoneCore.Devices
         {
             get=>float.Parse(File.ReadAllText($"{PATH}/in_proximity_integration_time"));
             set=>File.WriteAllText($"{PATH}/in_proximity_integration_time",value.ToString());
-        }        
+        }
 
         public static void ApplyPreset((float integrationTime, float gain) preset)
         {

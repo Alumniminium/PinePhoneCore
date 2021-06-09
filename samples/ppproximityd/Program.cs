@@ -19,17 +19,19 @@ namespace ppproximityd
             while (true)
             {
                 var closeness = ProximitySensor.Proximity;
+                var mm = ProximitySensor.Millimeters;
                 if (closeness == ushort.MaxValue && !off)
                 {
                     off = true;
                     Display.PowerOn = false;
                     Digitizer.Enabled = false;
+
+                    SoC.CpuGovernor = "userspace";
+                    SoC.CpuFrequency = 100;
+
                     for (int i = 1; i < SoC.CpuCores.Length; i++)
-                    {
-                        SoC.CpuCores[i].Governor = "userspace";
-                        SoC.CpuCores[i].Frequency = 100;
                         SoC.CpuCores[i].Enabled = false;
-                    }
+                    
                     PinePhoneCore.Helpers.Shell.Execute("pkill", "-STOP conky");
                     PinePhoneCore.Helpers.Shell.Execute("pkill", "-STOP pplightd");
                 }
@@ -39,15 +41,14 @@ namespace ppproximityd
                     Display.PowerOn = true;
                     Digitizer.Enabled = true;
 
+                    SoC.CpuGovernor = "conservative";
                     for (int i = 1; i < SoC.CpuCores.Length; i++)
-                    {
-                        SoC.CpuCores[i].Governor = "conservative";
                         SoC.CpuCores[i].Enabled = true;
-                    }
+                    
                     PinePhoneCore.Helpers.Shell.Execute("pkill", "-CONT conky");
                     PinePhoneCore.Helpers.Shell.Execute("pkill", "-CONT pplightd");
                 }
-                Console.WriteLine($"Distance: {closeness}, Backlight: {Display.PowerOn}");
+                Console.WriteLine($"Millimeters: {mm} Distance: {closeness}, Backlight: {Display.PowerOn}");
                 Thread.Sleep(500);
             }
         }
