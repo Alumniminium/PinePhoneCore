@@ -1,5 +1,4 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
@@ -9,6 +8,11 @@
     <Authors>Trbl</Authors>
     <Company>Her.st</Company>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+
+     	<PublishTrimmed>true</PublishTrimmed>    
+     	<PublishReadyToRun>true</PublishReadyToRun>    
+     	<PublishSingleFile>true</PublishSingleFile>    
+     	<RuntimeIdentifier>linux-arm64</RuntimeIdentifier>  
   </PropertyGroup>
 
   <ItemGroup>
